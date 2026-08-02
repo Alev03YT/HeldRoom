@@ -1,75 +1,94 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#030303" />
-  <meta name="description" content="HeldRoom - Escape room horror immersiva nel browser." />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#050304">
   <title>HeldRoom | La Bambola di Ashwood</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
-        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
-      }
-    }
-  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <canvas id="gameCanvas" aria-label="Ambiente tridimensionale HeldRoom"></canvas>
+  <main id="game">
+    <section id="startScreen" class="screen active start-screen">
+      <div class="start-card">
+        <p class="eyebrow">HELDROOM PRESENTA</p>
+        <h1>La Bambola di Ashwood</h1>
+        <p>Escape room horror cinematografica · 60 minuti</p>
+        <label><input id="readyCheck" type="checkbox"> Ho le cuffie e sono pronto</label>
+        <button id="startButton" disabled>ENTRA NELLA CASA</button>
+      </div>
+    </section>
 
-  <div id="filmGrain" aria-hidden="true"></div>
-  <div id="vignette" aria-hidden="true"></div>
-  <div id="damageFlash" aria-hidden="true"></div>
+    <section id="playScreen" class="screen play-screen">
+      <header class="hud">
+        <div class="brand">HELDROOM</div>
+        <div class="objective"><span>OBIETTIVO</span><strong id="objectiveText"></strong></div>
+        <div id="timer">60:00</div>
+        <button id="soundButton" aria-label="Audio">🔊</button>
+      </header>
 
-  <section id="startScreen" class="start-screen active">
-    <div class="start-card">
-      <p class="eyebrow">HELDROOM PRESENTA</p>
-      <h1>La Bambola di Ashwood</h1>
-      <p class="subtitle">Escape room horror immersiva · 60 minuti</p>
-      <p class="intro-copy">Indossa le cuffie. Muovi il dito o il mouse per guardarti intorno. Tocca gli oggetti illuminati per interagire.</p>
-      <label class="consent"><input id="headphonesCheck" type="checkbox" /> Sono pronto a entrare nella casa</label>
-      <button id="startButton" class="primary" disabled>ENTRA AD ASHWOOD</button>
-      <p class="technical-note">Contiene lampi, rumori improvvisi e movimenti della visuale.</p>
-    </div>
-  </section>
+      <div id="sceneViewport" class="scene-viewport">
+        <div id="sceneLayer" class="scene-layer" data-scene="foyer">
+          <div class="scene-depth back"></div>
+          <div class="scene-depth middle"></div>
+          <div class="scene-depth front"></div>
+          <div id="sceneEffects" class="scene-effects"></div>
+          <div id="hotspots" class="hotspots"></div>
+          <div class="vignette"></div>
+        </div>
 
-  <div id="hud" class="hud hidden">
-    <div class="hud-top">
-      <div class="brand">HELDROOM</div>
-      <div class="objective"><span>OBIETTIVO</span><strong id="objectiveText">Esplora l'atrio</strong></div>
-      <div id="timer" class="timer">60:00</div>
-      <button id="audioButton" class="hud-button" aria-label="Audio">🔊</button>
-    </div>
-    <div id="roomTitle" class="room-title">ATRIO DI ASHWOOD</div>
-    <div id="crosshair" class="crosshair"><span></span></div>
-    <div id="interactionLabel" class="interaction-label hidden">Esamina</div>
-    <div id="inventory" class="inventory"><span>INVENTARIO</span><div id="inventoryItems">Vuoto</div></div>
-  </div>
+        <div id="roomCaption" class="room-caption">
+          <span id="chapterText"></span>
+          <strong id="roomName"></strong>
+        </div>
+      </div>
 
-  <div id="narration" class="narration hidden" role="dialog" aria-live="polite">
-    <div id="speaker" class="speaker">Clara</div>
-    <p id="narrationText"></p>
-    <div class="narration-progress"><span id="narrationProgress"></span></div>
-    <button id="skipNarration">Salta</button>
-  </div>
+      <aside class="inventory">
+        <span>INVENTARIO</span>
+        <div id="inventoryItems">Vuoto</div>
+      </aside>
 
-  <div id="inspectPanel" class="inspect-panel hidden" role="dialog" aria-modal="true">
-    <div class="inspect-card">
-      <button id="closeInspect" class="close-button">×</button>
-      <p id="inspectKicker" class="eyebrow">OGGETTO</p>
-      <h2 id="inspectTitle"></h2>
-      <p id="inspectText"></p>
-      <div id="inspectActions"></div>
-    </div>
-  </div>
+      <div id="dialogue" class="dialogue hidden">
+        <strong id="speaker"></strong>
+        <p id="dialogueText"></p>
+        <button id="continueDialogue">Continua</button>
+      </div>
 
-  <div id="transitionCurtain" class="transition-curtain"></div>
+      <div id="inspectModal" class="modal hidden">
+        <div class="inspect-card">
+          <button id="closeInspect" class="close">×</button>
+          <p class="eyebrow">ESAMINA</p>
+          <h2 id="inspectTitle"></h2>
+          <div id="inspectVisual" class="inspect-visual"></div>
+          <p id="inspectText"></p>
+          <div id="inspectActions"></div>
+        </div>
+      </div>
 
-  <script type="module" src="game3d.js"></script>
+      <div id="puzzleModal" class="modal hidden">
+        <div class="inspect-card puzzle-card">
+          <button id="closePuzzle" class="close">×</button>
+          <p class="eyebrow">ENIGMA</p>
+          <h2 id="puzzleTitle"></h2>
+          <p id="puzzleText"></p>
+          <div id="puzzleContent"></div>
+          <p id="puzzleFeedback"></p>
+        </div>
+      </div>
+
+      <div id="transition" class="transition hidden" aria-hidden="true">
+        <div class="transition-room old-room"></div>
+        <div class="transition-door"><div class="door-panel"></div></div>
+        <div class="transition-dark"></div>
+        <div class="transition-room new-room"></div>
+      </div>
+    </section>
+  </main>
+
+  <audio id="voiceAudio" preload="auto"></audio>
+  <script src="script.js"></script>
 </body>
 </html>
