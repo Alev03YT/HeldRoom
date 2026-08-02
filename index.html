@@ -1,15 +1,75 @@
 <!DOCTYPE html>
-<html lang="it"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#050304"><meta name="description" content="HeldRoom: escape room horror interattiva da 60 minuti"><title>HeldRoom | La Bambola di Ashwood</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"></head><body>
-<div id="noise"></div><div id="flash"></div><div id="blood"></div><div id="jumpscare"><div id="scareFace">NON VOLTARTI</div></div>
-<main id="app">
-<section id="start" class="screen active"><div class="start-card"><p class="eyebrow">HELDROOM ORIGINAL</p><h1>La Bambola di Ashwood</h1><p>Un'esperienza horror interattiva da 60 minuti</p><div class="warning">Cuffie consigliate. Contiene lampi, suoni improvvisi e immagini inquietanti.</div><label><input id="ready" type="checkbox"> Sono pronto a entrare</label><button id="newGame" class="primary" disabled>ENTRA NELLA VILLA</button><button id="continueGame" class="secondary hidden">CONTINUA PARTITA</button><p class="small">L'audio si attiva dopo il primo tocco. La partita viene salvata automaticamente.</p></div></section>
-<section id="intro" class="screen"><div class="cinema"><div id="introText"></div><button id="skipIntro" class="ghost">Salta introduzione</button></div></section>
-<section id="game" class="screen"><header><div class="brand">HELDROOM</div><div class="objective"><span>OBIETTIVO</span><strong id="objective"></strong></div><div id="progress">0/16</div><div id="timer">60:00</div><button id="audio" class="icon">🔊</button><button id="hint">AIUTO <b id="hints">4</b></button></header>
-<div id="scene" data-scene="gate"><div class="scene-art"><div class="depth depth-a"></div><div class="depth depth-b"></div><div class="fog"></div><div class="vignette"></div></div><div class="scene-meta"><span id="chapter"></span><h2 id="sceneName"></h2><p id="sceneDescription"></p></div><div id="actions" class="actions"></div><div class="nav"><button id="back" class="nav-btn">← Indietro</button><button id="look" class="nav-btn">Guardati intorno</button></div></div>
-<aside id="inventory"><div class="aside-title">INVENTARIO <small>tocca due oggetti per combinarli</small></div><div id="items"></div></aside>
-<div id="dialogue" class="dialogue hidden"><strong id="speaker"></strong><p id="dialogueText"></p><button id="dialogueNext">Continua</button></div>
-<div id="modal" class="modal hidden"><div class="modal-card"><button id="closeModal" class="close">×</button><p id="puzzleType" class="eyebrow"></p><h2 id="puzzleTitle"></h2><p id="puzzleDescription"></p><div id="puzzleBody"></div><p id="feedback"></p></div></div>
-<div id="hintModal" class="modal hidden"><div class="modal-card compact"><button id="closeHint" class="close">×</button><p class="eyebrow">UN SUSSURRO DALLA CASA</p><h2>Forse non sei solo</h2><p id="hintText"></p></div></div>
-<div id="eventToast" class="event-toast hidden"></div></section>
-<section id="ending" class="screen"><div class="ending-card"><p id="endKicker" class="eyebrow"></p><h2 id="endTitle"></h2><p id="endText"></p><div class="stats"><div><span>Tempo rimasto</span><b id="endTime"></b></div><div><span>Enigmi risolti</span><b id="endPuzzles"></b></div><div><span>Finale</span><b id="endRoute"></b></div></div><button id="restart" class="primary">GIOCA DI NUOVO</button></div></section>
-</main><audio id="voiceTrack" preload="auto"></audio><script src="script.js"></script></body></html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#030303" />
+  <meta name="description" content="HeldRoom - Escape room horror immersiva nel browser." />
+  <title>HeldRoom | La Bambola di Ashwood</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <canvas id="gameCanvas" aria-label="Ambiente tridimensionale HeldRoom"></canvas>
+
+  <div id="filmGrain" aria-hidden="true"></div>
+  <div id="vignette" aria-hidden="true"></div>
+  <div id="damageFlash" aria-hidden="true"></div>
+
+  <section id="startScreen" class="start-screen active">
+    <div class="start-card">
+      <p class="eyebrow">HELDROOM PRESENTA</p>
+      <h1>La Bambola di Ashwood</h1>
+      <p class="subtitle">Escape room horror immersiva · 60 minuti</p>
+      <p class="intro-copy">Indossa le cuffie. Muovi il dito o il mouse per guardarti intorno. Tocca gli oggetti illuminati per interagire.</p>
+      <label class="consent"><input id="headphonesCheck" type="checkbox" /> Sono pronto a entrare nella casa</label>
+      <button id="startButton" class="primary" disabled>ENTRA AD ASHWOOD</button>
+      <p class="technical-note">Contiene lampi, rumori improvvisi e movimenti della visuale.</p>
+    </div>
+  </section>
+
+  <div id="hud" class="hud hidden">
+    <div class="hud-top">
+      <div class="brand">HELDROOM</div>
+      <div class="objective"><span>OBIETTIVO</span><strong id="objectiveText">Esplora l'atrio</strong></div>
+      <div id="timer" class="timer">60:00</div>
+      <button id="audioButton" class="hud-button" aria-label="Audio">🔊</button>
+    </div>
+    <div id="roomTitle" class="room-title">ATRIO DI ASHWOOD</div>
+    <div id="crosshair" class="crosshair"><span></span></div>
+    <div id="interactionLabel" class="interaction-label hidden">Esamina</div>
+    <div id="inventory" class="inventory"><span>INVENTARIO</span><div id="inventoryItems">Vuoto</div></div>
+  </div>
+
+  <div id="narration" class="narration hidden" role="dialog" aria-live="polite">
+    <div id="speaker" class="speaker">Clara</div>
+    <p id="narrationText"></p>
+    <div class="narration-progress"><span id="narrationProgress"></span></div>
+    <button id="skipNarration">Salta</button>
+  </div>
+
+  <div id="inspectPanel" class="inspect-panel hidden" role="dialog" aria-modal="true">
+    <div class="inspect-card">
+      <button id="closeInspect" class="close-button">×</button>
+      <p id="inspectKicker" class="eyebrow">OGGETTO</p>
+      <h2 id="inspectTitle"></h2>
+      <p id="inspectText"></p>
+      <div id="inspectActions"></div>
+    </div>
+  </div>
+
+  <div id="transitionCurtain" class="transition-curtain"></div>
+
+  <script type="module" src="game3d.js"></script>
+</body>
+</html>
