@@ -17,6 +17,7 @@
         <p class="eyebrow">HELDROOM PRESENTA</p>
         <h1>La Bambola di Ashwood</h1>
         <p>Escape room horror cinematografica · 60 minuti</p>
+        <p class="warning">Le stanze restano bloccate finché non completi realmente gli enigmi.</p>
         <label><input id="readyCheck" type="checkbox"> Ho le cuffie e sono pronto</label>
         <button id="startButton" disabled>ENTRA NELLA CASA</button>
       </div>
@@ -26,6 +27,7 @@
       <header class="hud">
         <div class="brand">HELDROOM</div>
         <div class="objective"><span>OBIETTIVO</span><strong id="objectiveText"></strong></div>
+        <div class="tension"><span>PAURA</span><i><b id="tensionBar"></b></i></div>
         <div id="timer">60:00</div>
         <button id="soundButton" aria-label="Audio">🔊</button>
       </header>
@@ -37,57 +39,33 @@
           <div class="scene-depth front"></div>
           <div id="sceneEffects" class="scene-effects"></div>
           <div id="hotspots" class="hotspots"></div>
+          <div id="horrorShadow" class="horror-shadow"></div>
+          <div id="lightning" class="lightning"></div>
           <div class="vignette"></div>
         </div>
-
-        <div id="roomCaption" class="room-caption">
-          <span id="chapterText"></span>
-          <strong id="roomName"></strong>
-        </div>
+        <div id="roomCaption" class="room-caption"><span id="chapterText"></span><strong id="roomName"></strong></div>
+        <div id="lockNotice" class="lock-notice hidden">La casa non ti lascia passare.</div>
       </div>
 
-      <aside class="inventory">
-        <span>INVENTARIO</span>
-        <div id="inventoryItems">Vuoto</div>
-      </aside>
+      <aside class="inventory"><span>INVENTARIO</span><div id="inventoryItems">Vuoto</div></aside>
 
       <div id="dialogue" class="dialogue hidden">
-        <strong id="speaker"></strong>
-        <p id="dialogueText"></p>
-        <button id="continueDialogue">Continua</button>
+        <strong id="speaker"></strong><p id="dialogueText"></p><button id="continueDialogue">Continua</button>
       </div>
 
       <div id="inspectModal" class="modal hidden">
-        <div class="inspect-card">
-          <button id="closeInspect" class="close">×</button>
-          <p class="eyebrow">ESAMINA</p>
-          <h2 id="inspectTitle"></h2>
-          <div id="inspectVisual" class="inspect-visual"></div>
-          <p id="inspectText"></p>
-          <div id="inspectActions"></div>
-        </div>
+        <div class="inspect-card"><button id="closeInspect" class="close">×</button><p class="eyebrow">ESAMINA</p><h2 id="inspectTitle"></h2><div id="inspectVisual" class="inspect-visual"></div><p id="inspectText"></p><div id="inspectActions"></div></div>
       </div>
 
       <div id="puzzleModal" class="modal hidden">
-        <div class="inspect-card puzzle-card">
-          <button id="closePuzzle" class="close">×</button>
-          <p class="eyebrow">ENIGMA</p>
-          <h2 id="puzzleTitle"></h2>
-          <p id="puzzleText"></p>
-          <div id="puzzleContent"></div>
-          <p id="puzzleFeedback"></p>
-        </div>
+        <div class="inspect-card puzzle-card"><button id="closePuzzle" class="close">×</button><p class="eyebrow">ENIGMA</p><h2 id="puzzleTitle"></h2><p id="puzzleText"></p><div id="puzzleContent"></div><p id="puzzleFeedback"></p></div>
       </div>
 
       <div id="transition" class="transition hidden" aria-hidden="true">
-        <div class="transition-room old-room"></div>
-        <div class="transition-door"><div class="door-panel"></div></div>
-        <div class="transition-dark"></div>
-        <div class="transition-room new-room"></div>
+        <div class="transition-room old-room"></div><div class="transition-hand"></div><div class="transition-door"><div class="door-panel"></div></div><div class="transition-dark"></div><div class="transition-room new-room"></div>
       </div>
     </section>
   </main>
-
   <audio id="voiceAudio" preload="auto"></audio>
   <script src="script.js"></script>
 </body>
