@@ -1,61 +1,45 @@
-# HeldRoom
+# HeldRoom — La Bambola di Ashwood
 
-HeldRoom è un progetto di escape room horror interattive giocabili dal browser.
+Escape room horror originale da browser, progettata per una sessione massima di 60 minuti.
 
-## Prima stanza: La Bambola di Ashwood
+## Contenuto attuale
 
-Prototipo originale ispirato alle atmosfere delle case infestate e delle bambole maledette. La storia, i personaggi e il nome della bambola sono originali, così il progetto potrà essere pubblicato e venduto senza dipendere da un franchise cinematografico esistente.
+- 15 ambientazioni/inquadrature interattive
+- enigmi principali e secondari
+- inventario con oggetti combinabili
+- percorso di Clara e percorso corrotto della casa
+- finali differenti
+- eventi horror casuali e legati al tempo
+- salvataggio automatico
+- timer da 60 minuti
+- voce italiana automatica come fallback
+- struttura pronta per registrazioni professionali
+- interfaccia responsive per smartphone e desktop
 
-### Funzioni presenti
+## Registrazioni professionali
 
-- timer reale da 60 minuti;
-- introduzione cinematografica con narrazione vocale in italiano;
-- cinque ambienti attraversabili;
-- enigmi progressivi;
-- inventario;
-- tre aiuti contestuali;
-- salvataggio automatico in locale;
-- effetti di lampi, pioggia, movimenti di camera e jumpscare;
-- atmosfera sonora generata tramite Web Audio API;
-- finale positivo e finale per tempo scaduto;
-- interfaccia responsive per smartphone e computer.
+Il gioco cerca automaticamente questi file:
 
-## Avvio locale
+```text
+audio/clara-intro.mp3
+audio/clara-finale.mp3
+```
 
-È sufficiente aprire `index.html` in un browser moderno. Per evitare limitazioni del browser è comunque consigliato usare un piccolo server locale, per esempio Live Server in Visual Studio Code.
+Quando i file non esistono o non possono essere riprodotti, viene usata la sintesi vocale italiana del dispositivo. Altre battute registrate possono essere aggiunte estendendo la mappa `file` nella funzione `speak()` di `script.js`.
 
-## Pubblicazione con GitHub Pages
+## Pubblicazione GitHub Pages
 
-Nel repository aprire:
+1. Aprire **Settings** nel repository.
+2. Entrare in **Pages**.
+3. Selezionare **Deploy from a branch**.
+4. Scegliere `main` e `/ root`.
 
-1. `Settings`;
-2. `Pages`;
-3. in `Build and deployment` scegliere `Deploy from a branch`;
-4. selezionare il branch `main` e la cartella `/ (root)`;
-5. salvare.
+Indirizzo previsto:
 
-Il sito verrà pubblicato all'indirizzo indicato da GitHub Pages.
+```text
+https://alev03yt.github.io/HeldRoom/
+```
 
-## Struttura
+## Nota sul progetto
 
-- `index.html`: schermate e interfaccia di gioco;
-- `style.css`: grafica, ambientazioni e animazioni;
-- `script.js`: motore di gioco, timer, enigmi, audio e salvataggio.
-
-## Sviluppi consigliati
-
-Questa è una base giocabile e dimostrativa. Per ottenere una vera esperienza commerciale da circa 60 minuti sarà necessario ampliare la stanza con:
-
-- almeno 12-18 enigmi principali e secondari;
-- scene illustrate o render 3D originali;
-- audio registrato professionalmente;
-- sottotitoli sincronizzati;
-- più oggetti combinabili;
-- percorsi alternativi e finali multipli;
-- sistema account, pagamenti e codici di accesso;
-- pannello amministratore per aggiungere nuove escape room;
-- analisi dei tempi medi di soluzione e bilanciamento degli enigmi.
-
-## Nota legale
-
-Non usare nomi, loghi, immagini, dialoghi o personaggi protetti appartenenti a film esistenti senza una licenza. Un'identità originale consente di costruire un prodotto commercializzabile e riconoscibile come HeldRoom.
+La storia e la bambola sono originali e non usano il nome, i personaggi o il materiale grafico dei film di Annabelle. Questo rende il progetto più adatto a una futura pubblicazione commerciale.
