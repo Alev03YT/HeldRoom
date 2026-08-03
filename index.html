@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#050603">
+  <meta name="theme-color" content="#030403">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>HeldRoom — Lo Studio del Professore</title>
+  <title>HeldRoom — L'Archivio Proibito</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -14,58 +14,52 @@
   <link rel="stylesheet" href="reboot.css">
 </head>
 <body>
-  <div class="app-shell">
-    <header class="topbar">
-      <div class="brand"><strong>HELDROOM</strong><small>THE FORBIDDEN ARCHIVE</small></div>
-      <div class="status">
-        <div class="fear"><span>TENSIONE</span><b id="fearValue">22%</b><i><u id="fearBar"></u></i></div>
-        <button id="sound" class="icon-btn" aria-label="Audio">🔊</button>
+  <div class="game-shell">
+    <header class="hud-top">
+      <div class="brand"><strong>HELDROOM</strong><small>L'ARCHIVIO PROIBITO</small></div>
+      <div class="hud-status">
+        <div class="fear"><span>TENSIONE</span><b id="fearValue">18%</b><i><u id="fearBar"></u></i></div>
+        <button id="sound" class="round-button" aria-label="Audio">🔊</button>
       </div>
     </header>
 
-    <main class="play-layout">
-      <section id="scene" class="scene" aria-label="Lo studio del professor Voss">
+    <main class="stage">
+      <section id="scene" class="scene" aria-label="Studio del professor Voss">
         <div class="room-image"></div>
-        <div class="room-light"></div>
+        <div class="cold-light"></div>
+        <div class="warm-light"></div>
         <div class="rain"></div>
         <div class="grain"></div>
+        <div class="vignette"></div>
 
-        <div class="scene-topline">
-          <section class="room-title">
-            <small>CAPITOLO I</small>
-            <h1>LO STUDIO</h1>
-            <p>L’archivio privato del professor Voss.</p>
-          </section>
-          <section class="timer-box"><small>TEMPO</small><strong id="timer">60:00</strong></section>
-        </div>
+        <section class="room-label">
+          <small>CAPITOLO I</small>
+          <h1>LO STUDIO</h1>
+          <p>L'ultimo luogo in cui Voss fu visto vivo.</p>
+        </section>
+
+        <section class="timer-pill"><small>TEMPO</small><strong id="timer">60:00</strong></section>
 
         <button class="hotspot desk" data-type="desk" aria-label="Esamina la scrivania"></button>
         <button class="hotspot globe" data-type="globe" aria-label="Esamina il globo"></button>
         <button class="hotspot cabinet" data-type="cabinet" aria-label="Esamina la vetrina"></button>
-        <button class="hotspot door" data-type="door" aria-label="Esamina la porta sigillata"></button>
+        <button class="hotspot door" data-type="door" aria-label="Esamina la porta"></button>
+
         <button id="flash" class="flash" aria-label="Lanterna">▰</button>
-      </section>
 
-      <aside class="side-panel">
-        <section class="objective-card">
-          <small>OBIETTIVO</small>
-          <strong id="objectiveText">Trova i tre sigilli e apri la porta dell’archivio.</strong>
-          <button id="hintQuick" class="secondary-btn">Chiedi un aiuto</button>
+        <section class="mission-strip">
+          <div><small>OBIETTIVO</small><strong id="objectiveText">Cerca il primo indizio sulla scrivania.</strong></div>
+          <button id="hintQuick" class="hint-button" aria-label="Aiuto">?</button>
         </section>
 
-        <section class="progress-card">
-          <div><small>INDIZI</small><b id="clueCount">0 / 4</b></div>
-          <div><small>SIGILLI</small><b id="sealCount">0 / 3</b></div>
-        </section>
-
-        <section class="inventory-card">
-          <div class="section-head"><span>INVENTARIO</span><small id="inventoryCount">3 / 6</small></div>
+        <section class="inventory-dock">
+          <div class="inventory-head"><span>INVENTARIO</span><small id="inventoryCount">1 / 6</small></div>
           <div id="inventorySlots" class="slots"></div>
         </section>
-      </aside>
+      </section>
     </main>
 
-    <nav class="bottom-nav" aria-label="Navigazione">
+    <nav class="app-nav" aria-label="Navigazione">
       <button class="active" data-panel="game"><span>◉</span><small>Gioca</small></button>
       <button data-panel="diary"><span>▤</span><small>Diario</small></button>
       <button data-panel="inventory"><span>▦</span><small>Oggetti</small></button>
@@ -76,9 +70,9 @@
 
   <div id="sheet" class="sheet" aria-hidden="true">
     <button id="sheetBackdrop" class="sheet-backdrop" aria-label="Chiudi"></button>
-    <section class="sheet-card">
+    <section class="sheet-panel">
       <div class="grabber"></div>
-      <header><h2 id="sheetTitle"></h2><button id="closeSheet" class="icon-btn">×</button></header>
+      <header><h2 id="sheetTitle"></h2><button id="closeSheet" class="round-button">×</button></header>
       <div id="sheetBody"></div>
     </section>
   </div>
