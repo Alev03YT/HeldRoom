@@ -1,10 +1,20 @@
-const state={time:3600,fear:28,clues:0,puzzles:0,items:['◉','⚿','◍','▧'],muted:false};
-const $=s=>document.querySelector(s);
-function render(){const m=String(Math.floor(state.time/60)).padStart(2,'0'),s=String(state.time%60).padStart(2,'0');$('#timer').textContent=`${m}:${s}`;$('#clues').textContent=state.clues;$('#puzzles').textContent=state.puzzles;$('#fearValue').textContent=`${state.fear}%`;$('#fearBar').style.width=`${state.fear}%`}
+const state={time:3600,fear:28,clues:0,puzzles:0,items:['◉','⚿','◍','▧'],muted:false,seen:new Set()};
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+function render(){const m=String(Math.floor(state.time/60)).padStart(2,'0'),s=String(state.time%60).padStart(2,'0');$('#timer').textContent=`${m}:${s}`;$('#fearValue').textContent=`${state.fear}%`;$('#fearBar').style.width=`${state.fear}%`}
 setInterval(()=>{if(state.time>0){state.time--;render()}},1000);
-function openInfo(title,text){$('#modalTitle').textContent=title;$('#modalText').textContent=text;$('#modal').classList.add('open')}
-$('#closeModal').onclick=()=>$('#modal').classList.remove('open');
-document.querySelectorAll('.hotspot').forEach(b=>b.addEventListener('click',()=>{const type=b.dataset.type;if(type==='door')openInfo('Porta dell’atrio','È chiusa. Il metallo della serratura è ancora caldo.');if(type==='doll'){state.fear=Math.min(100,state.fear+8);openInfo('La bambola','I suoi occhi non riflettono la luce. Quando distogli lo sguardo, la sedia scricchiola.')}if(type==='clock'){state.clues=Math.min(17,state.clues+1);openInfo('Orologio a pendolo','Le lancette sono ferme sulle diciannove. Un dettaglio utile per la cassaforte.')}if(type==='portrait'){state.clues=Math.min(17,state.clues+1);openInfo('Ritratto di famiglia','La cornice è leggermente staccata dal muro. Dietro potrebbe esserci qualcosa.')}render()}));
-$('#flash').onclick=()=>document.body.classList.toggle('flash-on');
+function vibrate(pattern=20){if(navigator.vibrate)navigator.vibrate(pattern)}
+function openInfo(title,text,type){$('#modalTitle').textContent=title;$('#modalText').textContent=text;$('#inspectArt').dataset.type=type||'';$('#modal').classList.add('open');$('#modal').setAttribute('aria-hidden','false');vibrate(15)}
+function closeInfo(){$('#modal').classList.remove('open');$('#modal').setAttribute('aria-hidden','true')}
+$('#closeModal').onclick=closeInfo;$('#modalAction').onclick=closeInfo;$('#modal').addEventListener('click',e=>{if(e.target===$('#modal'))closeInfo()});
+const info={door:['Porta dell’atrio','È chiusa. La serratura è ancora tiepida, come se qualcuno l’avesse appena toccata.'],doll:['La bambola','Gli occhi di vetro non riflettono la luce. Quando distogli lo sguardo, la sedia scricchiola.'],clock:['Orologio a pendolo','Le lancette sono ferme sulle diciannove. Il pendolo, invece, continua a muoversi in silenzio.'],portrait:['Ritratto di famiglia','La cornice è leggermente staccata dal muro. Dietro si intravede un bordo metallico.']};
+$$('.hotspot').forEach(b=>b.addEventListener('click',()=>{const type=b.dataset.type,[title,text]=info[type];if(!state.seen.has(type)){state.seen.add(type);state.clues=Math.min(17,state.clues+1)}if(type==='doll')state.fear=Math.min(100,state.fear+8);openInfo(title,text,type);render()}));
+$('#flash').onclick=()=>{document.body.classList.toggle('flash-on');vibrate(10)};
 $('#sound').onclick=()=>{state.muted=!state.muted;$('#sound').textContent=state.muted?'🔇':'🔊'};
+function sheetMarkup(type){if(type==='diary')return `<h2>Diario</h2><div class="sheetCard"><small>NUOVA VOCE</small><b>La bambola</b><p>Clara racconta che la bambola comparve nella casa dopo l’incendio del 1974.</p></div>`;if(type==='inventory')return `<h2>Inventario</h2><div class="inventoryGrid">${state.items.map(x=>`<div class="inventorySlot">${x}</div>`).join('')}<div class="inventorySlot"></div><div class="inventorySlot"></div></div>`;if(type==='help')return `<h2>Aiuti</h2><div class="sheetGrid"><div class="sheetCard"><small>DISPONIBILI</small><b>2 aiuti</b></div><div class="sheetCard"><small>PROGRESSI</small><b>${state.clues}/17 indizi</b></div><div class="sheetCard"><small>ENIGMI</small><b>${state.puzzles}/5</b></div></div><button class="primaryAction" id="useHint">Usa un aiuto</button>`;return ''}
+function openSheet(type){if(type==='game'){closeSheet();return}$('#sheetContent').innerHTML=sheetMarkup(type);$('#sheet').classList.add('open');$('#sheet').setAttribute('aria-hidden','false');$$('.navItem').forEach(x=>x.classList.toggle('active',x.dataset.sheet===type));$('#useHint')?.addEventListener('click',()=>openInfo('Suggerimento','Il ritratto non è perfettamente aderente al muro. Prova a esaminarlo con attenzione.','hint'))}
+function closeSheet(){$('#sheet').classList.remove('open');$('#sheet').setAttribute('aria-hidden','true');$$('.navItem').forEach(x=>x.classList.toggle('active',x.dataset.sheet==='game'))}
+$$('.navItem').forEach(b=>b.addEventListener('click',()=>openSheet(b.dataset.sheet)));$('#closeSheet').onclick=closeSheet;$('#sheetBackdrop').onclick=closeSheet;
+function randomLightning(){setTimeout(()=>{if(!document.hidden){const l=$('#lightning');l.classList.remove('flash');void l.offsetWidth;l.classList.add('flash');if(!state.muted)vibrate([12,40,18])}randomLightning()},9000+Math.random()*18000)}
+randomLightning();
+if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 render();
