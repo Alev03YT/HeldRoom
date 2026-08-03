@@ -1,0 +1,63 @@
+/* Definitive responsive interface. Loaded last and intentionally replaces the experimental HUD layers. */
+:root{--hr-gold:#d7c2a7;--hr-dim:#9b8978;--hr-red:#cf2f37;--hr-panel:rgba(3,3,3,.76);--hr-line:rgba(216,191,160,.2)}
+html,body,#game,.play-screen{width:100%;height:100%;height:100svh;overflow:hidden;background:#000}
+body::before,body::after,#cinemaBars{display:none!important}
+.play-screen{position:fixed!important;inset:0!important}
+
+/* Single coherent header */
+.hud{position:fixed!important;inset:0 0 auto 0!important;height:72px!important;padding:0 26px!important;z-index:120!important;display:grid!important;grid-template-columns:minmax(210px,270px) 1fr minmax(190px,240px) 46px!important;gap:18px!important;align-items:center!important;background:linear-gradient(180deg,#030303 0%,rgba(3,3,3,.97) 72%,rgba(3,3,3,.2) 100%)!important;border-bottom:1px solid rgba(255,255,255,.05)!important;backdrop-filter:blur(8px)!important;pointer-events:auto!important}
+.brand{display:block!important;font-family:Cinzel,serif!important;font-size:1.42rem!important;letter-spacing:.19em!important;color:#dfcfbc!important;white-space:nowrap!important}
+.brand::after{content:'ESCAPE THE DARKNESS';display:block;font:500 .43rem/1.4 Inter,sans-serif;letter-spacing:.29em;color:#75685d}
+.objective,.hud>#timer{display:none!important}
+.premium-nav{display:flex!important;justify-content:center;gap:clamp(22px,4vw,58px);font-family:Cinzel,serif;font-size:.74rem;letter-spacing:.11em;color:#766b61;white-space:nowrap}
+.premium-nav span:first-child{color:#eadac7;position:relative}.premium-nav span:first-child::after{content:'';position:absolute;left:0;right:0;bottom:-21px;height:2px;background:#8b1d24}
+.tension{display:flex!important;justify-self:end!important;align-items:flex-start!important;min-width:185px!important}
+.tension span{font:.58rem Cinzel,serif!important;letter-spacing:.14em!important;color:#a99886!important}
+.tension i{width:180px!important;height:6px!important;background:rgba(80,12,17,.3)!important;overflow:visible!important}
+.tension b{height:100%!important;background:linear-gradient(90deg,#761018,#ec2933)!important;box-shadow:0 0 14px rgba(220,32,43,.25)!important}
+.hud #soundButton{display:block!important;border:0!important;background:transparent!important;color:#c8b8a6!important;padding:8px!important;font-size:1.1rem!important}
+
+/* Stage */
+.scene-viewport{position:fixed!important;inset:72px 0 0!important;width:auto!important;height:auto!important;filter:none!important;background:#030303!important}
+.camera,.scene-layer{position:absolute!important;inset:0!important;width:100%!important;height:100%!important}
+.room-art{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;background-size:cover!important;background-repeat:no-repeat!important;background-position:center center!important}
+.room-caption{display:none!important}
+
+/* Remove every legacy duplicate presentation element */
+.premium-left,.premium-right,.premium-bottom-left,.premium-bottom-right{display:none!important}
+
+/* Definitive panels injected by definitive-ui.js */
+.hr-left,.hr-right,.hr-voice,.hr-flash{position:fixed;z-index:110;color:var(--hr-gold);pointer-events:none}
+.hr-left{left:20px;top:112px;width:260px;padding:22px 22px 24px;border-left:1px solid rgba(222,199,171,.35);background:linear-gradient(90deg,rgba(0,0,0,.86),rgba(0,0,0,.22) 70%,transparent)}
+.hr-left h2{margin:0 0 12px;font:500 1.72rem/1.08 Cinzel,serif;letter-spacing:.03em}.hr-left p{margin:6px 0;font:.8rem/1.45 Inter,sans-serif;color:#c5b7a9}.hr-left .red{color:#d13b42}.hr-objective{margin-top:44px;padding-left:40px;position:relative}.hr-objective::before{content:'⚿';position:absolute;left:0;top:1px;font-size:1.35rem}.hr-objective small,.hr-card small{display:block;font:.59rem Cinzel,serif;letter-spacing:.13em;color:#9b8a79}.hr-objective strong{display:block;margin-top:9px;font:400 .92rem/1.5 Inter,sans-serif;color:#dfcfbe}
+.hr-right{right:20px;top:112px;width:176px;display:grid;gap:11px}.hr-card{padding:14px 15px;border:1px solid var(--hr-line);border-radius:4px;background:rgba(0,0,0,.65);box-shadow:0 14px 42px rgba(0,0,0,.55)}.hr-card b{display:block;margin-top:8px;font:500 1.2rem Cinzel,serif}.hr-card p{margin:5px 0;font:.7rem/1.45 Inter,sans-serif;color:#bfae9d}.hr-card .red{color:#d33b42}
+.hr-voice{left:20px;bottom:18px;width:360px;padding:15px 17px;border:1px solid var(--hr-line);background:rgba(0,0,0,.73);font-family:Cinzel,serif}.hr-voice h3{margin:0 0 9px;font-size:.78rem;letter-spacing:.12em;font-weight:500}.hr-voice p{margin:0;font:.69rem/1.5 Inter,sans-serif;color:#b9aa9b}.hr-voice .red{color:#d43b42}.hr-wave{height:16px;margin-top:8px;background:repeating-linear-gradient(90deg,transparent 0 3px,#8d8278 3px 4px,transparent 4px 7px);opacity:.65;mask-image:linear-gradient(0deg,transparent,#000 35% 65%,transparent)}
+.hr-flash{right:28px;bottom:25px;pointer-events:auto}.hr-flash button{width:78px;height:78px;border:1px solid rgba(225,207,182,.45);border-radius:50%;background:radial-gradient(circle,#29231f,#050505 72%);box-shadow:0 0 0 6px rgba(255,255,255,.025),0 0 34px rgba(220,180,130,.1);color:#dac8b3;font-size:1.8rem;transform:rotate(-35deg)}
+
+.inventory{position:fixed!important;z-index:111!important;left:50%!important;bottom:18px!important;transform:translateX(-50%)!important;width:min(520px,46vw)!important;min-width:0!important;max-width:none!important;padding:9px 13px 12px!important;text-align:center!important;border:1px solid var(--hr-line)!important;background:rgba(3,3,3,.76)!important;box-shadow:0 18px 55px #000!important;backdrop-filter:blur(6px)!important}
+.inventory>span{display:block!important;margin-bottom:7px!important;font:.62rem Cinzel,serif!important;letter-spacing:.14em!important;color:#bca68f!important}.inventory #inventoryItems{font-size:0!important}.inventory #inventoryItems::before{content:'◯   ⚿   ◍   ▧';font-size:1.45rem;word-spacing:19px;color:#b9a38b}
+.dialogue{z-index:180!important;bottom:24px!important;width:min(760px,calc(100% - 32px))!important}
+.modal{z-index:190!important}
+.hotspot{opacity:.03!important;background:transparent!important;border-color:transparent!important;box-shadow:none!important}.hotspot:active,.hotspot:focus,.hotspot:hover{opacity:.55!important;border-color:rgba(225,202,173,.42)!important;box-shadow:0 0 0 8px rgba(160,100,65,.07),0 0 26px rgba(220,155,105,.28)!important}
+
+/* Tablet */
+@media (max-width:1100px){
+ .hud{grid-template-columns:210px 1fr 165px 42px!important;padding:0 16px!important}.premium-nav{gap:22px;font-size:.65rem}.tension{min-width:150px!important}.tension i{width:145px!important}.hr-left{width:220px}.hr-right{width:150px}.hr-voice{width:300px}.inventory{width:min(460px,48vw)!important}
+}
+
+/* Phone portrait: no overlap; scene remains the dominant element */
+@media (max-width:720px) and (orientation:portrait){
+ .hud{height:62px!important;grid-template-columns:1fr 112px 38px!important;padding:0 12px!important;gap:8px!important}.brand{font-size:.93rem!important}.brand::after{font-size:.31rem}.premium-nav{display:none!important}.tension{min-width:104px!important}.tension i{width:104px!important}.tension span{font-size:.48rem!important}.hud #soundButton{font-size:.95rem!important;padding:4px!important}
+ .scene-viewport{inset:62px 0 0!important}
+ .room-art{background-position:center center!important;transform:none!important;animation:none!important}
+ .hr-left{left:10px;top:78px;width:168px;padding:13px 13px 15px;background:linear-gradient(90deg,rgba(0,0,0,.86),rgba(0,0,0,.28),transparent)}.hr-left h2{font-size:1.22rem;margin-bottom:8px}.hr-left p{font-size:.67rem;margin:4px 0}.hr-objective{margin-top:20px;padding-left:27px}.hr-objective::before{font-size:1rem}.hr-objective strong{font-size:.7rem;line-height:1.35}.hr-objective small{font-size:.48rem}
+ .hr-right{right:9px;top:78px;width:112px}.hr-card{padding:9px 10px}.hr-card b{font-size:.92rem}.hr-card p{font-size:.56rem}.hr-card:nth-child(2),.hr-card:nth-child(3){display:none}
+ .hr-voice{display:none}.hr-flash{right:9px;bottom:12px}.hr-flash button{width:60px;height:60px;font-size:1.35rem}
+ .inventory{left:10px!important;right:80px!important;bottom:10px!important;transform:none!important;width:auto!important;padding:8px 8px 10px!important}.inventory #inventoryItems::before{font-size:1.13rem;word-spacing:10px}
+ .dialogue{bottom:84px!important;font-size:.78rem!important;padding:14px 16px!important}
+}
+
+/* Phone landscape */
+@media (max-height:560px) and (orientation:landscape){
+ .hud{height:54px!important;grid-template-columns:190px 1fr 130px 38px!important;padding:0 12px!important}.brand{font-size:.88rem!important}.premium-nav{gap:18px;font-size:.57rem}.tension{min-width:120px!important}.tension i{width:115px!important}.scene-viewport{inset:54px 0 0!important}.hr-left{top:68px;width:190px;padding:10px 12px}.hr-left h2{font-size:1.1rem}.hr-left p{font-size:.62rem}.hr-objective{margin-top:12px}.hr-right{top:68px;width:125px}.hr-card{padding:8px}.hr-card:nth-child(2),.hr-card:nth-child(3){display:none}.hr-voice{display:none}.inventory{bottom:7px!important;width:390px!important;padding:6px 9px 8px!important}.hr-flash{right:10px;bottom:6px}.hr-flash button{width:54px;height:54px}
+}
