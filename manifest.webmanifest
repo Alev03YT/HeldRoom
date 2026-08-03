@@ -1,0 +1,12 @@
+{
+  "name":"HeldRoom — Escape the Darkness",
+  "short_name":"HeldRoom",
+  "description":"Escape room horror cinematografica ottimizzata per smartphone.",
+  "start_url":"./",
+  "scope":"./",
+  "display":"standalone",
+  "orientation":"any",
+  "background_color":"#030303",
+  "theme_color":"#050505",
+  "icons":[{"src":"assets/app-icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
